@@ -142,7 +142,7 @@ ingress:
   # -- Annotations extra que pueda necesitar el balanceador
   annotations:
     # -- Puertos a exponer en el balanceador (`json`)
-    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}'
     # -- DNS Record a crear en Route 53
     external-dns.alpha.kubernetes.io/hostname: "hello-kubernetes-custom-helm.dev4.tbk.cl"
 
