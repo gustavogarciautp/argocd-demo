@@ -1,0 +1,43 @@
+{{- if and .Values.canary.enabled (not .Values.blueGreen.enabled) -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "deploy.fullname" . }}-stable
+  labels:
+    {{- include "deploy.labels" . | nindent 4 }}
+    {{- toYaml .Values.serviceLabels | nindent 4 }}
+  namespace: {{ .Values.namespace}}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    {{- with .Values.service }}
+    - port: {{ .portStable | default "80" }}
+      targetPort: {{ .targetPort | default "80" }}
+      protocol: {{ .protocol | default "TCP" | quote }}
+      name: {{ .name | default "http" | quote }}
+    {{- end }}
+  selector:
+    {{- include "deploy.selectorLabels" . | nindent 4 }}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "deploy.fullname" . }}-canary
+  labels:
+    {{- include "deploy.labels" . | nindent 4 }}
+    {{- toYaml .Values.serviceLabels | nindent 4 }}
+  namespace: {{ .Values.namespace}}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    {{- with .Values.service }}
+    - port: {{ .portCanary | default "80" }}
+      targetPort: {{ .targetPort | default "80" }}
+      protocol: {{ .protocol | default "TCP" | quote }}
+      name: {{ .name | default "http" | quote }}
+    {{- end }}
+  selector:
+    {{- include "deploy.selectorLabels" . | nindent 4 }}
+{{- end }}
