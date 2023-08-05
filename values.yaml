@@ -148,7 +148,7 @@ ingress:
 
   # -- Parametros de backend del host (`json`)  
   hosts: 
-    - host: hello-kubernetes-custom-helm.dev4.tbk.cl
+    #- host: hello-kubernetes-custom-helm.dev4.tbk.cl
       paths:
         - path: /*
           pathType: ImplementationSpecific
