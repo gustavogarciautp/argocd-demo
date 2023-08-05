@@ -203,9 +203,9 @@ autoscaling:
   targetMemoryUtilizationPercentage: 80
 
 # -- Selector de Nodo a utilizar para despliegue. Por defecto, los aplicativos van a los nodos con la etiqueta `apps`
-nodeSelector:
-  NodeGroupType: apps
-  kubernetes.io/os: linux
+nodeSelector: {}
+  # NodeGroupType: apps
+  # kubernetes.io/os: linux
 
 # -- Tolerations para despliegue de PODS
 tolerations: [] 
