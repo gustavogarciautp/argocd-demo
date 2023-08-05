@@ -140,6 +140,8 @@ ingress:
   # -- Typo de objetivo para el target group (`instance`, `ip`)
   targetType: ip
   # -- Annotations extra que pueda necesitar el balanceador
+  ## -- New
+  scheme: internet-facing
   annotations:
     # -- Puertos a exponer en el balanceador (`json`)
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'

@@ -25,7 +25,7 @@ metadata:
     alb.ingress.kubernetes.io/load-balancer-name: {{ $.Values.ingress.loadBalancerName }}
     alb.ingress.kubernetes.io/group.name: {{ $.Values.ingress.group }}
     alb.ingress.kubernetes.io/target-type: {{ $.Values.ingress.targetType }}
-    alb.ingress.kubernetes.io/scheme: internal
+    alb.ingress.kubernetes.io/scheme: {{ $.Values.ingress.scheme }}
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
