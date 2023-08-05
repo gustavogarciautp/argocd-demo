@@ -119,7 +119,7 @@ service:
   # -- Tipo de Servicio (validos: `NodePort`, `ClusterIP`)
   type: ClusterIP 
   # -- Puerto de exposición del servicio
-  port: 80
+  port: 8080
   targetPort: 8080
 
 # -- Service Labels
@@ -130,7 +130,7 @@ serviceLabels:
 
 ingress:
   # -- Si habilita o no el servicio mediante un Ingress
-  enabled: false
+  enabled: true
   # -- Clase del balanceador cuando se expone un Ingress
   className: "alb"
   # -- Nombre del ingress group al que pertenece el Ingress.
@@ -153,7 +153,7 @@ ingress:
         - path: /*
           pathType: ImplementationSpecific
           backend:
-            serviceName: hello-kubernetes-custom
+            serviceName: helm-demo-deploy
   # -- usar `servicePort: use-annotation` si el despliegue es de tipo `Canary`
             servicePort: 8080
 
