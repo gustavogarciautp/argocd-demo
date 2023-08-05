@@ -57,7 +57,8 @@ readinessProbe:
   timeoutSeconds: 1
 
 serviceAccount:
-  # -- Nombre del `ServiceAccount` a usar 
+  # -- Nombre del `ServiceAccount` a usar
+  create: true
   name: "demo-sa"
 
 # -- POD metadata annotations
