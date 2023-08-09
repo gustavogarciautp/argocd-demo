@@ -25,6 +25,10 @@ nameOverride: ""
 # -- reemplaza completamente los nombres generados
 fullnameOverride: ""
 
+env:
+  - name: MESSAGE
+    value: Hello World!
+
 # -- puertos del contenedor
 containerPorts:
   ports:
