@@ -1,9 +1,5 @@
 # -- Valores por defecto para el despliegue.
 
-# -- Annotations para deployment.yaml
-deployAnnotations: 
-  checkov.io/skip1: CKV_K8S_43=No se usa digest
-
 # -- Deployment labels
 
 deployLabels: 
@@ -36,31 +32,6 @@ containerPorts:
     containerPort: 8080
     protocol: TCP
 
-# -- Liveness Probe del aplicativo
-livenessProbe:
-  httpGet:
-    path: /
-    port: 8080
-  initialDelaySeconds: 120
-  periodSeconds: 40
-  successThreshold: 1
-  timeoutSeconds: 1
-
-# -- Readiness Probe del aplicativo
-readinessProbe:
-  httpGet:
-    path: /
-    port: 8080
-  initialDelaySeconds: 120
-  periodSeconds: 40
-  successThreshold: 1
-  timeoutSeconds: 1
-
-serviceAccount:
-  # -- Nombre del `ServiceAccount` a usar
-  create: true
-  name: "demo-sa"
-
 # -- POD metadata annotations
 podAnnotations: {}
 
@@ -69,51 +40,6 @@ podLabels:
   app: "hello-kubernetes-custom-helm"
   product-id: "demo"
   component-id: "hello-kubernetes-custom-helm"
-
-# -- Contexto de seguridad para los PODS
-podSecurityContext:  
-  runAsUser: 12340
-  runAsNonRoot: true
-  # fsGroup: 2000
-
-# -- Capacidades del contexto de seguridad para los contenedores
-securityContext:
-  runAsUser: 1000
-  readOnlyRootFilesystem: true
-  allowPrivilegeEscalation: false
-  runAsNonRoot: true
-  capabilities:
-    drop:
-      - ALL
-
-# -- despliegue progresivo de tipo Canary
-canary:
-  # -- Si el aplicativo utiliza despliegue progresivo de tipo Canary
-  enabled: false
-  # -- Puerto del servicio Stable
-  portStable: 80
-  # -- Puerto del servicio Canary
-  portCanary: 80
-  # -- Habilitar stickiness del balanceador
-  stickiness: false
-  # -- Duración del Stickiness (por defecto: 3600)
-  durationSeconds: 3600
-  # -- Steps de despliegue canary
-  steps:
-  # -- Porcentaje del total de pods, para el step
-    - setWeight: 60
-  # -- Duración de la pausa antes de continuar al siguiente step. Eliminar o comentar la linea "duration" para que la pausa sea indefinida.
-      duration: 5m
-
-blueGreen:
-  # -- Si el aplicativo utiliza despliegue progresivo de tipo Blue-Green
-  enabled: false
-  # -- Si el despliegue debe hacer promotion automaticamente
-  autoPromotionEnabled: false
-  # -- tiempo de delay en el que se aplica el autoPromotion luego de que el servicio Preview este OK
-  autoPromotionSeconds: 20
-  # -- tiempo de retraso en el cual las antiguas replicas siguen vigente luego de un promotion o resume de BlueGreen
-  scaleDownDelaySeconds: 240
 
 service: 
   # -- Tipo de Servicio (validos: `NodePort`, `ClusterIP`)
@@ -145,12 +71,9 @@ ingress:
   annotations:
     # -- Puertos a exponer en el balanceador (`json`)
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
-    # -- DNS Record a crear en Route 53
-    external-dns.alpha.kubernetes.io/hostname: "hello-kubernetes-custom-helm.dev4.tbk.cl"
 
   # -- Parametros de backend del host (`json`)  
   hosts: 
-    #- host: hello-kubernetes-custom-helm.dev4.tbk.cl
     - paths:
         - path: /*
           pathType: ImplementationSpecific
@@ -165,20 +88,6 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
-# -- container Volume Mounts para sistemas Read Only
-volumeMounts:
-  - mountPath: /var/run
-    name: tmpfs-1
-  - mountPath: /var/cache/nginx
-    name: tmpfs-2
-
-# -- volumes a montar para lectura
-volumes: 
-  - name: tmpfs-1
-    emptyDir: {}
-  - name: tmpfs-2
-    emptyDir: {}
-
 resources:
   # -- Ajuste de recursos que utilizara el componente para desplegarse. Este parametro debe ser ajustado a conciencia, y evaluado de componente a componente para un uso optimizado de recursos.
   limits:
@@ -191,25 +100,3 @@ resources:
       cpu: 100m 
       # -- Request de Memoria para el POD
       memory: 128Mi 
-
-autoscaling:
-  # -- Si habilita o no el Autoscaling
-  enabled: false 
-  # -- Minimo de replicas a disponibilizar
-  minReplicas: 1 
-  # -- Maximo de replicas a disponibilizar
-  maxReplicas: 20
-  # -- Porcentaje de CPU Utilization para escalar 
-  targetCPUUtilizationPercentage: 80 
-  # -- Porcentaje de MEM Utilization para escalar
-  targetMemoryUtilizationPercentage: 80
-
-# -- Selector de Nodo a utilizar para despliegue. Por defecto, los aplicativos van a los nodos con la etiqueta `apps`
-nodeSelector: {}
-  # NodeGroupType: apps
-  # kubernetes.io/os: linux
-
-# -- Tolerations para despliegue de PODS
-tolerations: [] 
-# -- Afinidad de los nodos a utilizar para despliegue
-affinity: {} 
