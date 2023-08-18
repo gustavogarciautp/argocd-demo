@@ -8,7 +8,7 @@ deployLabels:
   component-id: "hello-kubernetes-custom-helm"
 
 # -- Cantidad de replicas a disponibilizar
-replicaCount: 1
+replicaCount: 10
 
 # -- Nombre del namespace donde debe desplegarse el aplicativo. No usar default
 namespace: "demo"
